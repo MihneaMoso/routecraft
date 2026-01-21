@@ -1,0 +1,12 @@
+# RouteCraft Build Configuration
+# Copy this file to build.config and edit as needed
+
+# Raylib installation path (Windows only)
+# RAYLIB_PATH=C:/raylib/raylib
+
+# Compiler options
+# CC=gcc
+# CXX=g++
+
+# Build type: release or debug
+# BUILD_TYPE=release

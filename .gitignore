@@ -39,3 +39,9 @@
 
 # debug information files
 *.dwo
+
+# RouteCraft specific
+build/
+*.rcg
+build.config
+.vscode/
