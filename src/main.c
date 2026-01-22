@@ -1,5 +1,39 @@
 /**
- * main.c - RouteCraft Application
+ * main.c - Aplicația RouteCraft
+ * 
+ * =============================================================================
+ * 🇷🇴 INSTRUCȚIUNI ÎN ROMÂNĂ
+ * =============================================================================
+ * 
+ * RouteCraft - O aplicație de hartă care demonstrează algoritmul A* de căutare.
+ * 
+ * COMPILARE ȘI RULARE:
+ * --------------------
+ * 1. Asigură-te că ai instalat Raylib:
+ *    - Windows: make install-raylib (sau winget install raysan5.raylib)
+ *    - Linux: make install-raylib (sau sudo apt install libraylib-dev)
+ *    - macOS: make install-raylib (sau brew install raylib)
+ * 
+ * 2. Compilare:
+ *    - Compilare standard: make
+ *    - Compilare unity (mai rapidă): make unity
+ *    - Compilare debug: make debug
+ * 
+ * 3. Rulare:
+ *    - make run
+ *    - sau direct: ./build/routecraft (Linux/macOS) sau build\routecraft.exe (Windows)
+ * 
+ * UTILIZARE:
+ * ----------
+ * - Adăugare locații: Click "Add Location", apoi click pe hartă
+ * - Conectare locații: Click "Connect Locations", apoi click pe două noduri
+ * - Căutare rută: Completează câmpurile From/To și click "Find Route"
+ * - Navigare: Click dreapta + drag = pan, Scroll = zoom
+ * - Salvare/Încărcare: Folosește butoanele Save/Load
+ * 
+ * =============================================================================
+ * 🇬🇧 ENGLISH - RouteCraft Application
+ * =============================================================================
  * 
  * A beautiful map application demonstrating the A* pathfinding algorithm.
  * This educational tool visualizes how heuristic search algorithms work
@@ -159,7 +193,7 @@ void app_init(void) {
     // Initialize UI
     ui_init();
     
-    float y = 60;
+    float y = 80;
     float btnWidth = SIDEBAR_WIDTH - 40;
     
     // Input fields
@@ -167,11 +201,11 @@ void app_init(void) {
     y += 50;
     
     // Mode buttons
-    ui_button_init(&app.addNodeBtn, 20, y, btnWidth, 40, "➕ Add Location", UI_COLOR_PRIMARY);
+    ui_button_init(&app.addNodeBtn, 20, y, btnWidth, 40, "Add Location", UI_COLOR_PRIMARY);
     y += 50;
-    ui_button_init(&app.addEdgeBtn, 20, y, btnWidth, 40, "🔗 Connect Locations", UI_COLOR_PRIMARY);
+    ui_button_init(&app.addEdgeBtn, 20, y, btnWidth, 40, "Connect Locations", UI_COLOR_PRIMARY);
     y += 50;
-    ui_button_init(&app.deleteBtn, 20, y, btnWidth, 40, "🗑️ Delete", UI_COLOR_DANGER);
+    ui_button_init(&app.deleteBtn, 20, y, btnWidth, 40, "Delete", UI_COLOR_DANGER);
     y += 70;
     
     // Search section
@@ -179,17 +213,17 @@ void app_init(void) {
     y += 50;
     ui_input_init(&app.searchToInput, 20, y, btnWidth, 40, "To location...");
     y += 50;
-    ui_button_init(&app.searchBtn, 20, y, btnWidth, 40, "🔍 Find Route", UI_COLOR_SECONDARY);
+    ui_button_init(&app.searchBtn, 20, y, btnWidth, 40, "Find Route", UI_COLOR_SECONDARY);
     y += 50;
     ui_button_init(&app.clearPathBtn, 20, y, btnWidth, 40, "Clear Path", UI_COLOR_BG_LIGHTER);
-    y += 70;
+    y += 90;
     
     // File operations
-    ui_button_init(&app.saveBtn, 20, y, (btnWidth - 10) / 2, 40, "💾 Save", UI_COLOR_BG_LIGHTER);
-    ui_button_init(&app.loadBtn, 20 + (btnWidth + 10) / 2, y, (btnWidth - 10) / 2, 40, "📂 Load", UI_COLOR_BG_LIGHTER);
+    ui_button_init(&app.saveBtn, 20, y, (btnWidth - 10) / 2, 40, "Save", UI_COLOR_BG_LIGHTER);
+    ui_button_init(&app.loadBtn, 20 + (btnWidth + 10) / 2, y, (btnWidth - 10) / 2, 40, "Load", UI_COLOR_BG_LIGHTER);
     y += 50;
     
-    ui_button_init(&app.generateSampleBtn, 20, y, btnWidth, 40, "🗺️ Generate Sample", UI_COLOR_ACCENT);
+    ui_button_init(&app.generateSampleBtn, 20, y, btnWidth, 40, "Generate Sample", UI_COLOR_ACCENT);
 }
 
 void app_cleanup(void) {
@@ -576,17 +610,17 @@ void app_draw_sidebar(void) {
     DrawLineEx((Vector2){SIDEBAR_WIDTH, 0}, (Vector2){SIDEBAR_WIDTH, WINDOW_HEIGHT}, 2, UI_COLOR_BORDER);
     
     // Title
-    DrawText("🗺️ RouteCraft", 20, 15, UI_FONT_SIZE_TITLE, UI_COLOR_TEXT);
+    DrawText("RouteCraft", 20, 15, UI_FONT_SIZE_TITLE, UI_COLOR_TEXT);
     
     // Locations section
-    DrawText("📍 Add Location", 20, 50, UI_FONT_SIZE_SMALL, UI_COLOR_TEXT_DIM);
+    DrawText("Add Location", 20, 50, UI_FONT_SIZE_SMALL, UI_COLOR_TEXT_DIM);
     ui_input_draw(&app.nodeNameInput);
     ui_button_draw(&app.addNodeBtn);
     ui_button_draw(&app.addEdgeBtn);
     ui_button_draw(&app.deleteBtn);
     
     // Search section
-    DrawText("🔍 Find Route", 20, 210, UI_FONT_SIZE_SMALL, UI_COLOR_TEXT_DIM);
+    DrawText("Find Route", 20, 280, UI_FONT_SIZE_SMALL, UI_COLOR_TEXT_DIM);
     ui_input_draw(&app.searchFromInput);
     ui_input_draw(&app.searchToInput);
     ui_button_draw(&app.searchBtn);
@@ -616,7 +650,7 @@ void app_draw_sidebar(void) {
     }
     
     // File operations
-    DrawText("💾 Save/Load", 20, 510, UI_FONT_SIZE_SMALL, UI_COLOR_TEXT_DIM);
+    DrawText("Save/Load", 20, 510, UI_FONT_SIZE_SMALL, UI_COLOR_TEXT_DIM);
     ui_button_draw(&app.saveBtn);
     ui_button_draw(&app.loadBtn);
     ui_button_draw(&app.generateSampleBtn);

@@ -1,8 +1,122 @@
 # RouteCraft 🗺️
 
+O aplicație desktop cross-platform frumoasă care vizualizează **algoritmul de căutare A\* (A-Star)** folosind o reprezentare simplificată a hărții. Acest instrument educațional demonstrează cum algoritmii de căutare euristică alimentează aplicațiile de rutare din lumea reală, precum Google Maps.
+
 A beautiful, cross-platform desktop application that visualizes the **A\* (A-Star) pathfinding algorithm** using a simplified map representation. This educational tool demonstrates how heuristic search algorithms power real-world routing applications like Google Maps.
 
 ![RouteCraft Screenshot](docs/screenshot.png)
+
+---
+
+## 🇷🇴 Instrucțiuni în Română
+
+### Compilare și Rulare
+
+#### Cerințe preliminare
+
+- Compilator **GCC/G++** (MinGW pe Windows)
+- Biblioteca **Raylib** instalată
+- Utilitarul **Make**
+
+#### Pornire Rapidă (Instalare Automată Raylib)
+
+Makefile-ul poate instala automat Raylib pentru platforma ta:
+
+```bash
+# Verifică dacă Raylib este instalat
+make check-raylib
+
+# Instalează Raylib (specific platformei)
+make install-raylib
+
+# Compilează proiectul
+make
+```
+
+#### Windows
+
+```powershell
+# Opțiunea 1: Instalare automată
+make install-raylib
+
+# Opțiunea 2: Folosind winget
+winget install raysan5.raylib
+
+# Opțiunea 3: Instalare manuală
+# 1. Descarcă de la https://github.com/raysan5/raylib/releases
+# 2. Extrage în C:\raylib\raylib
+# 3. Setează variabila de mediu RAYLIB_PATH
+
+# Compilare
+make
+```
+
+#### Linux
+
+```bash
+# Opțiunea 1: Instalare automată (recomandat)
+make install-raylib
+
+# Opțiunea 2: Folosind managerul de pachete
+sudo apt install libraylib-dev   # Debian/Ubuntu
+sudo dnf install raylib-devel    # Fedora
+sudo pacman -S raylib            # Arch
+
+# Compilare
+make
+```
+
+#### macOS
+
+```bash
+# Opțiunea 1: Instalare automată (folosește Homebrew)
+make install-raylib
+
+# Opțiunea 2: Instalare manuală cu Homebrew
+brew install raylib
+
+# Compilare
+make
+```
+
+#### Opțiuni de Compilare
+
+```bash
+# Compilare standard (unități de compilare separate)
+make
+
+# Compilare unity (unitate de compilare unică - compilare mai rapidă, optimizare mai bună)
+make unity
+
+# Compilare pentru depanare (cu simboluri de debug)
+make debug
+
+# Compilare și rulare
+make run
+
+# Curățare artefacte de compilare
+make clean
+
+# Afișare toate target-urile disponibile
+make help
+```
+
+#### Rulare
+
+```bash
+make run
+```
+
+#### Utilizare
+
+- **Adăugare locații**: Click pe "Add Location" apoi click pe hartă
+- **Conectare locații**: Click pe "Connect Locations" apoi click pe două noduri
+- **Căutare rute**: Introdu locațiile From/To și click pe "Find Route"
+- **Navigare**: Click dreapta + drag pentru pan, scroll pentru zoom
+
+---
+
+## 🇬🇧 English Instructions
 
 ## Features ✨
 
