@@ -26,6 +26,10 @@ Makefile-ul poate instala automat Raylib pentru platforma ta:
 # Verifică dacă Raylib este instalat
 make check-raylib
 
+# Creaza src daca nu exista si pune codul sursa acolo
+mkdir -p src/ && mv *.c src/ && mv *.h src/
+
+```
 # Instalează Raylib (specific platformei)
 make install-raylib
 
@@ -36,13 +40,16 @@ make
 #### Windows
 
 ```powershell
+
+# Creaza src daca nu exista si pune codul sursa acolo
+New-Item -ItemType Directory -Path src -Force | Out-Null
+Move-Item -Path *.c -Destination src -Force
+Move-Item -Path *.h -Destination src -Force
+
 # Opțiunea 1: Instalare automată
 make install-raylib
 
-# Opțiunea 2: Folosind winget
-winget install raysan5.raylib
-
-# Opțiunea 3: Instalare manuală
+# Opțiunea 2: Instalare manuală
 # 1. Descarcă de la https://github.com/raysan5/raylib/releases
 # 2. Extrage în C:\raylib\raylib
 # 3. Setează variabila de mediu RAYLIB_PATH
