@@ -45,20 +45,49 @@ A\* is used in:
 - **Raylib** library installed
 - **Make** build tool
 
+### Quick Start (Automatic Raylib Installation)
+
+The Makefile can automatically install Raylib for your platform:
+
+```bash
+# Check if Raylib is installed
+make check-raylib
+
+# Install Raylib (platform-specific)
+make install-raylib
+
+# Build the project
+make
+```
+
 ### Windows
 
-1. Install [Raylib](https://github.com/raysan5/raylib/releases)
-2. Set the `RAYLIB_PATH` environment variable or edit the Makefile
-3. Run:
-   ```powershell
-   make
-   ```
+```powershell
+# Option 1: Automatic installation
+make install-raylib
+
+# Option 2: Using winget
+winget install raysan5.raylib
+
+# Option 3: Manual installation
+# 1. Download from https://github.com/raysan5/raylib/releases
+# 2. Extract to C:\raylib\raylib
+# 3. Set RAYLIB_PATH environment variable (or use default)
+
+# Build
+make
+```
 
 ### Linux
 
 ```bash
-# Install raylib
-sudo apt install libraylib-dev
+# Option 1: Automatic installation (recommended)
+make install-raylib
+
+# Option 2: Using package manager
+sudo apt install libraylib-dev   # Debian/Ubuntu
+sudo dnf install raylib-devel    # Fedora
+sudo pacman -S raylib            # Arch
 
 # Build
 make
@@ -67,11 +96,63 @@ make
 ### macOS
 
 ```bash
-# Install raylib via Homebrew
+# Option 1: Automatic installation (uses Homebrew)
+make install-raylib
+
+# Option 2: Manual Homebrew install
 brew install raylib
 
 # Build
 make
+```
+
+### Build Options
+
+```bash
+# Standard build (separate compilation units)
+make
+
+# Unity build (single compilation unit - faster builds, better optimization)
+make unity
+
+# Debug build (with debug symbols)
+make debug
+
+# Build and run
+make run
+
+# Clean build artifacts
+make clean
+
+# Show all available targets
+make help
+```
+
+### Unity Build ⚡
+
+The unity build compiles all source files as a single translation unit. This provides:
+
+- **Faster compilation**: Single compilation pass
+- **Better optimization**: Compiler sees all code at once
+- **Smaller binary**: More inlining opportunities
+- **Simpler builds**: No intermediate object files
+
+```bash
+# Build using unity build
+make unity
+```
+
+The unity build uses `src/unity_build.c` which includes all source files:
+```c
+// Core modules
+#include "graph.c"
+#include "astar.c"
+
+// UI components  
+#include "ui.c"
+
+// Main application
+#include "main.c"
 ```
 
 ### Running
@@ -79,6 +160,7 @@ make
 ```bash
 make run
 ```
+
 
 Or run the executable directly from the `build/` folder.
 

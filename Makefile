@@ -36,8 +36,8 @@ SRC_DIR := src
 BUILD_DIR := build
 OBJ_DIR := $(BUILD_DIR)/obj
 
-# Source files
-C_SOURCES := $(wildcard $(SRC_DIR)/*.c)
+# Source files (exclude unity_build.c from regular build)
+C_SOURCES := $(filter-out $(SRC_DIR)/unity_build.c,$(wildcard $(SRC_DIR)/*.c))
 CPP_SOURCES := $(wildcard $(SRC_DIR)/*.cpp)
 OBJECTS := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(C_SOURCES))
 OBJECTS += $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(CPP_SOURCES))
@@ -99,6 +99,105 @@ endif
 run: all
 	$(BUILD_DIR)/$(EXE)
 
+# ============================================================================
+# Unity Build - Compile all sources as a single translation unit
+# Benefits: Faster compilation, better optimization, smaller binary
+# ============================================================================
+
+UNITY_FILE := $(SRC_DIR)/unity_build.c
+
+unity: dirs
+	$(CC) $(CFLAGS) $(INCLUDE_PATHS) $(UNITY_FILE) -o $(BUILD_DIR)/$(EXE) $(LDFLAGS) $(LDLIBS)
+	@echo Unity build complete: $(BUILD_DIR)/$(EXE)
+
+# ============================================================================
+# Raylib Installation
+# Automatically downloads and installs Raylib if not present
+# ============================================================================
+
+RAYLIB_VERSION := 5.0
+RAYLIB_REPO := https://github.com/raysan5/raylib.git
+
+check-raylib:
+ifeq ($(PLATFORM),WINDOWS)
+	@where raylib.h >nul 2>&1 || echo Raylib not found in PATH. Run 'make install-raylib' to install.
+else
+	@pkg-config --exists raylib 2>/dev/null || echo "Raylib not found. Run 'make install-raylib' to install."
+endif
+
+install-raylib:
+ifeq ($(PLATFORM),WINDOWS)
+	@echo ============================================
+	@echo Installing Raylib for Windows...
+	@echo ============================================
+	@echo.
+	@echo Option 1: Using winget (recommended)
+	@echo   winget install raysan5.raylib
+	@echo.
+	@echo Option 2: Manual installation
+	@echo   1. Download from https://github.com/raysan5/raylib/releases
+	@echo   2. Extract to C:\raylib\raylib
+	@echo   3. Set RAYLIB_PATH environment variable
+	@echo.
+	@echo Option 3: Build from source (requires git and mingw)
+	@powershell -Command "if (!(Test-Path 'C:\raylib')) { New-Item -ItemType Directory -Path 'C:\raylib' }"
+	@cd /d C:\raylib && git clone --depth 1 --branch $(RAYLIB_VERSION) $(RAYLIB_REPO) 2>nul || echo Raylib already cloned
+	@cd /d C:\raylib\raylib\src && mingw32-make PLATFORM=PLATFORM_DESKTOP
+	@echo Raylib installed to C:\raylib\raylib
+else ifeq ($(PLATFORM),LINUX)
+	@echo ============================================
+	@echo Installing Raylib for Linux...
+	@echo ============================================
+	@echo Installing dependencies...
+	sudo apt-get update
+	sudo apt-get install -y build-essential git cmake
+	sudo apt-get install -y libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev
+	@echo Cloning and building Raylib...
+	@if [ ! -d "/tmp/raylib" ]; then git clone --depth 1 --branch $(RAYLIB_VERSION) $(RAYLIB_REPO) /tmp/raylib; fi
+	cd /tmp/raylib/src && sudo make install PLATFORM=PLATFORM_DESKTOP
+	@echo Raylib installed successfully!
+else ifeq ($(PLATFORM),MACOS)
+	@echo ============================================
+	@echo Installing Raylib for macOS...
+	@echo ============================================
+	@echo Using Homebrew (recommended)...
+	brew install raylib
+	@echo.
+	@echo If Homebrew is not installed, run:
+	@echo   /bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	@echo Then run 'make install-raylib' again.
+endif
+	@echo.
+	@echo ============================================
+	@echo Raylib installation complete!
+	@echo Run 'make' to build RouteCraft.
+	@echo ============================================
+
+# ============================================================================
+# Help
+# ============================================================================
+
+help:
+	@echo ============================================
+	@echo RouteCraft Build System
+	@echo ============================================
+	@echo.
+	@echo Available targets:
+	@echo   make              - Build the application (standard build)
+	@echo   make unity        - Unity build (faster, single compilation unit)
+	@echo   make debug        - Build with debug symbols
+	@echo   make run          - Build and run the application
+	@echo   make clean        - Remove build artifacts
+	@echo   make unity-clean  - Remove unity build file
+	@echo.
+	@echo Raylib:
+	@echo   make check-raylib   - Check if Raylib is installed
+	@echo   make install-raylib - Download and install Raylib
+	@echo.
+	@echo Platform: $(PLATFORM)
+	@echo Compiler: $(CC)
+	@echo.
+
 # Phony targets
-.PHONY: all dirs clean debug run
+.PHONY: all dirs clean debug run unity check-raylib install-raylib help
 
