@@ -336,7 +336,7 @@ void app_handle_map_input(void) {
                 const char* name = strlen(app.nodeNameInput.text) > 0 ? 
                                    app.nodeNameInput.text : "Location";
                 char nodeName[MAX_NAME_LENGTH];
-                snprintf(nodeName, sizeof(nodeName), "%s %d", name, app.graph.nodeCount + 1);
+                snprintf(nodeName, sizeof(nodeName), "%.100s %d", name, app.graph.nodeCount + 1);
                 
                 int id = graph_add_node(&app.graph, nodeName, worldPos.x, worldPos.y);
                 if (id >= 0) {

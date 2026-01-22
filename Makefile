@@ -36,6 +36,12 @@ SRC_DIR := src
 BUILD_DIR := build
 OBJ_DIR := $(BUILD_DIR)/obj
 
+# Windows-compatible directory paths
+ifeq ($(PLATFORM),WINDOWS)
+    BUILD_DIR_WIN := $(subst /,\,$(BUILD_DIR))
+    OBJ_DIR_WIN := $(subst /,\,$(OBJ_DIR))
+endif
+
 # Source files (exclude unity_build.c from regular build)
 C_SOURCES := $(filter-out $(SRC_DIR)/unity_build.c,$(wildcard $(SRC_DIR)/*.c))
 CPP_SOURCES := $(wildcard $(SRC_DIR)/*.cpp)
@@ -64,8 +70,8 @@ all: dirs $(BUILD_DIR)/$(EXE)
 # Create directories
 dirs:
 ifeq ($(PLATFORM),WINDOWS)
-	@if not exist $(BUILD_DIR) $(MKDIR) $(BUILD_DIR)
-	@if not exist $(OBJ_DIR) $(MKDIR) $(OBJ_DIR)
+	@if not exist "$(BUILD_DIR_WIN)" mkdir "$(BUILD_DIR_WIN)"
+	@if not exist "$(OBJ_DIR_WIN)" mkdir "$(OBJ_DIR_WIN)"
 else
 	@$(MKDIR) $(BUILD_DIR) $(OBJ_DIR)
 endif
@@ -90,7 +96,7 @@ debug: all
 # Clean
 clean:
 ifeq ($(PLATFORM),WINDOWS)
-	@if exist $(BUILD_DIR) $(RMDIR) $(BUILD_DIR)
+	@if exist "$(BUILD_DIR_WIN)" rmdir /S /Q "$(BUILD_DIR_WIN)"
 else
 	$(RMDIR) $(BUILD_DIR)
 endif
